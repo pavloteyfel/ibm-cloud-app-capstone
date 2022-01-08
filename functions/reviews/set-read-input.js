@@ -5,14 +5,9 @@ const main = (message) => {
 
     if (message.dealerId) {
         return new Promise((resolve, reject) => {
-            reviewDb.find(
-                {
-                    selector: { dealership: parseInt(message.dealerId) },
-                },
+            reviewDb.find({ selector: { dealership: parseInt(message.dealerId) } },
                 (error, result) => {
-                    if (error) {
-                        reject(error);
-                    }
+                    if (error) { reject(error) };
                     resolve(filter(result.docs[0]));
                 }
             );
@@ -21,10 +16,7 @@ const main = (message) => {
 
     return new Promise((resolve, reject) => {
         reviewDb.list({ include_docs: true }, (error, result) => {
-            if (error) {
-                reject(error);
-            }
-
+            if (error) { reject(error) }
             if (result.rows.length == 0) {
                 resolve({
                     dealerships: {},
