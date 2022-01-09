@@ -18,7 +18,7 @@ URL = "https://673eb614.eu-gb.apigw.appdomain.cloud/api/"
 HEADERS = {"Content-Type": "application/json"}
 DEALERSHIPS_ENDPOINT = "dealership"
 REVIEWS_ENDPOINT = "review"
-NLU_API_KEY = "cgCbl_j8c2Kc6TgEZL0ChlFLPsYQiUzCOf9WJe2IZSBD"
+NLU_API_KEY = ""
 NLU_URL = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/0c163ee7-47ac-4c82-8c2d-a32c137bebd1"
 
 
