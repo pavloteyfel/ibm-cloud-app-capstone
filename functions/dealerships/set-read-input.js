@@ -48,7 +48,7 @@ const main = (message) => {
 
             if (result.rows.length == 0) {
                 resolve({
-                    dealerships: {},
+                    dealerships: [],
                     total: 0,
                 });
             }
