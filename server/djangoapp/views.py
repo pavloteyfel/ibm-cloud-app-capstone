@@ -81,12 +81,12 @@ def registration_request(request):
 
 
 def get_dealerships(request):
-    ...
+    return HttpResponse()
 
 
 def get_dealer_details(request, dealer_id):
-    ...
+    return HttpResponse()
 
 
 def add_review(request, dealer_id):
-    ...
+    return HttpResponse()
