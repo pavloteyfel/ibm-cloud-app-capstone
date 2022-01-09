@@ -31,30 +31,3 @@ class CarModel(models.Model):
 
     def __str__(self):
         return f"{self.car_make.name} {self.name}"
-
-
-@dataclass
-class CarDealer:
-    address: str = None
-    city: str = None
-    full_name: str = None
-    id: int = None
-    lat: float = None
-    long: float = None
-    short_name: str = None
-    st: str = None
-    state: str = None
-    zip: str = None
-
-
-@dataclass
-class DearlerReview:
-    id: int = None
-    car_make: str = None
-    car_model: str = None
-    car_year: int = None
-    dealership: int = None
-    name: str = None
-    purchase: bool = None
-    purchase_date: datetime = None
-    review: str = None
