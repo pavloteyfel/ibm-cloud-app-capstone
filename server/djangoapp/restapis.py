@@ -1,5 +1,7 @@
 import requests
 
+from datetime import timedelta, datetime
+from functools import wraps, lru_cache
 from requests import RequestException
 from dataclasses import asdict, dataclass
 from urllib.parse import urljoin
@@ -8,8 +10,6 @@ from ibm_watson import ApiException
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import (
     Features,
-    EntitiesOptions,
-    KeywordsOptions,
     SentimentOptions,
 )
 
@@ -18,8 +18,30 @@ URL = "https://673eb614.eu-gb.apigw.appdomain.cloud/api/"
 HEADERS = {"Content-Type": "application/json"}
 DEALERSHIPS_ENDPOINT = "dealership"
 REVIEWS_ENDPOINT = "review"
-NLU_API_KEY = ""
+NLU_API_KEY = "cgCbl_j8c2Kc6TgEZL0ChlFLPsYQiUzCOf9WJe2IZSBD"
 NLU_URL = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/0c163ee7-47ac-4c82-8c2d-a32c137bebd1"
+
+
+def timed_cache(**timedelta_kwargs):
+    """Timed cache decorator, uses timedelta class for expiration"""
+
+    def _wrapper(f):
+        update_delta = timedelta(**timedelta_kwargs)
+        next_update = datetime.utcnow() + update_delta
+        f = lru_cache(None)(f)
+
+        @wraps(f)
+        def _wrapped(*args, **kwargs):
+            nonlocal next_update
+            now = datetime.utcnow()
+            if now >= next_update:
+                f.cache_clear()
+                next_update = now + update_delta
+            return f(*args, **kwargs)
+
+        return _wrapped
+
+    return _wrapper
 
 
 @dataclass
@@ -39,6 +61,7 @@ class CarDealer:
 @dataclass
 class DearlerReview:
     id: int = None
+    img: str = None
     car_make: str = None
     car_model: str = None
     car_year: int = None
@@ -64,7 +87,7 @@ def post_request(url, json):
     except RequestException as error:
         print(error)
 
-
+@timed_cache(days=1)
 def get_dealers_from_cf():
     results = []
     dealerships_url = urljoin(URL, DEALERSHIPS_ENDPOINT)
@@ -75,6 +98,11 @@ def get_dealers_from_cf():
     return results
 
 
+def get_sentiment_img(sentiment):
+    return f"{sentiment}.png"
+
+
+@timed_cache(days=1)
 def get_dealer_reviews_cf(dealer_id):
     results = []
     reviews_url = urljoin(URL, REVIEWS_ENDPOINT)
@@ -83,10 +111,11 @@ def get_dealer_reviews_cf(dealer_id):
         for dealer_review_data in dealers_review_json_data.get("reviews"):
             review = DearlerReview(**dealer_review_data)
             review.sentiment = analyze_sentiments(review.review)
+            review.img = get_sentiment_img(review.sentiment)
             results.append(review)
     return results
 
-
+@timed_cache(days=1)
 def get_dealer_details(dealer_id):
     dealer = None
     dealerships_url = urljoin(URL, DEALERSHIPS_ENDPOINT)
@@ -97,13 +126,15 @@ def get_dealer_details(dealer_id):
 
 
 def add_review(review):
+    get_dealer_reviews_cf.cache_clear()
     reviews_url = urljoin(URL, REVIEWS_ENDPOINT)
     review_data = {"review": {**review}}
     post_request(reviews_url, json=review_data)
 
 
+@timed_cache(days=1)
 def analyze_sentiments(text):
-    sentiment_label = ""
+    sentiment_label = "neutral"
     authenticator = IAMAuthenticator(NLU_API_KEY)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         version="2021-08-01", authenticator=authenticator

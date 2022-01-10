@@ -4,13 +4,12 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 
 # from .models import related models
-# from .restapis import related methods
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
-import restapis
+from . import restapis
 import logging
-import json
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -81,12 +80,21 @@ def registration_request(request):
 
 
 def get_dealerships(request):
-    return HttpResponse()
+    context = {}
+    context["dealerships"] = restapis.get_dealers_from_cf()
+    return render(request, "djangoapp/index.html", context)
 
 
 def get_dealer_details(request, dealer_id):
-    return HttpResponse()
+    context = {}
+    context["reviews"] = restapis.get_dealer_reviews_cf(dealer_id)
+    context["dealer"] = restapis.get_dealer_details(dealer_id)
+    return render(request, "djangoapp/dealer_details.html", context)
 
 
-def add_review(request, dealer_id):
-    return HttpResponse()
+def add_review(request, dealer_id=None):
+    if request.method == "GET":
+        context = {}
+        context["dealer"] = restapis.get_dealer_details(dealer_id)      
+        return render(request, "djangoapp/add_review.html", context)
+    # restapis.add_review()

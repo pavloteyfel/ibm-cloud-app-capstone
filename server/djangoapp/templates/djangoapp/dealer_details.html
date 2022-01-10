@@ -1,18 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dealership Review</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+{% extends "djangoapp/base.html" %}
 
-    <body>
+{% block title %}Dealer Details{% endblock %}
 
-    <!--Add a nav bar here -->
+{% block add_review %}
+    {% if user.is_authenticated %}
+    <a class="navbar-brand" href="{% url 'djangoapp:add_review' dealer.id %}">Add review</a>
+    {% endif %}
+{% endblock %}
 
-    <!-- Add reviews as cards -->
-
-    </body>
-
-</html>
+{% block content %}
+    <h2>Reviews for {{ dealer.full_name }}</h2>
+    {% if not reviews %}
+        <p>Currently there are no reviews for this dealer ...</p>
+    {% endif %}
+    <div class="card-columns">
+        {% for review in reviews %}
+        <div class="card">
+            <div class="card-img-left"><img src="{{ MEDIA_URL }}/emoji/{{ review.img }}" alt=""></div>
+            <div class="card-body">
+                {% if review.purchase %}
+                <div class="card-title">
+                    <h2>{{ review.car_make }} {{ review.car_model }}</h2>
+                </div>
+                <div class="card-title">{{ review.purchase_date }}</div>
+                {% endif %}
+                <div class="card-text">{{ review.review }}</div>
+            </div>
+        </div>
+    <!-- </div> -->
+    {% endfor %}
+{% endblock %}
