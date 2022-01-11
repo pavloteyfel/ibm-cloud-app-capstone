@@ -7,7 +7,7 @@ from datetime import datetime
 
 class CarMake(models.Model):
     name = models.CharField(max_length=120, null=False)
-    description = models.TextField(null=False)
+    description = models.TextField()
 
     def __str__(self):
         return f"{self.name}"

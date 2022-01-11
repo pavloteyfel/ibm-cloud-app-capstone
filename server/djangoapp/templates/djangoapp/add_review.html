@@ -2,33 +2,35 @@
 {% block title %}Add Review{% endblock %}
 {% block content %}
 <div style="margin: 0 auto; width: 500px;">
-    <h3>Add review about {{ dealer.full_name }}</h3>
-<form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="review" class="form-label">Review message:</label>
-        <textarea class="form-control" id="review" name="review" rows="2" required></textarea>
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="purchase" name="purchase" data-toggle="collapse" data-target="#car-data">
-        <label class="form-check-label" for="purchase" >Has purchased the car from this dealership</label>
-    </div>
-    <div id="car-data" class="collapse">
+    <h2>Add review about {{ dealer.full_name }}</h2>
+    <hr>
+    <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
+        {% csrf_token %}
         <div class="mb-3">
-            <label for="car">Select your car (model-make-year): </label>
-            <select name="car" id="car" class="form-control" required>
-                {% for car in car_models %}
-                <option selected value={{car.id}}>{{ car.name }}-{{ car.car_make.name }}-{{ car.year }}</option>
-                {% endfor %}
-            </select>
+            <label for="review" class="form-label">Review message:</label>
+            <textarea class="form-control" id="review" name="review" rows="2" required></textarea>
         </div>
-        <div class="mb-3">
-            <label for="purchase_date">Select your purchase date:</label>
-            <input class="date-own form-control" type="text" name="purchase_date" id="purchase_date">
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="purchase" name="purchase" data-toggle="collapse"
+                data-target="#car-data">
+            <label class="form-check-label" for="purchase">Has purchased the car from this dealership</label>
         </div>
-    </div>
-    <button type="submit" class="btn btn-info btn-block">Send review</button>
-</form>
+        <div id="car-data" class="collapse">
+            <div class="mb-3">
+                <label for="car">Select your car (model-make-year): </label>
+                <select name="car" id="car" class="form-control" required>
+                    {% for car in car_models %}
+                    <option selected value={{car.id}}>{{ car.name }}-{{ car.car_make.name }}-{{ car.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="purchase_date">Select your purchase date:</label>
+                <input class="date-own form-control" type="text" name="purchase_date" id="purchase_date" value="01/01/2022" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-info btn-block">Send review</button>
+    </form>
 </div>
 
 

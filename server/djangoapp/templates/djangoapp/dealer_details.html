@@ -4,29 +4,36 @@
 
 {% block add_review %}
     {% if user.is_authenticated %}
-    <a class="navbar-brand" href="{% url 'djangoapp:add_review' dealer.id %}">Add review</a>
+    <a class="navbar-brand" href="{% url 'djangoapp:add_review' dealer.id %}"><i class="bi bi-pencil"></i> Add review</a>
     {% endif %}
 {% endblock %}
 
 {% block content %}
     <h2>Reviews for {{ dealer.full_name }}</h2>
+    <hr>
     {% if not reviews %}
-        <p>Currently there are no reviews for this dealer ...</p>
-    {% endif %}
-    <div class="card-columns">
-        {% for review in reviews %}
-        <div class="card">
-            <div class="card-img-left"><img src="{{ MEDIA_URL }}/emoji/{{ review.img }}" alt=""></div>
-            <div class="card-body">
-                {% if review.purchase %}
-                <div class="card-title">
-                    <h2>{{ review.car_make }} {{ review.car_model }}</h2>
-                </div>
-                <div class="card-title">{{ review.purchase_date }}</div>
-                {% endif %}
-                <div class="card-text">{{ review.review }}</div>
+    <p>Currently there are no reviews for this dealer ...</p>
+    
+    {% else %}
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            {% for review in reviews %}
+            
+            <div class="d-flex pt-3">
+                <img src="{{ MEDIA_URL }}/emoji/{{ review.img }}" alt="" width="45" height="45">
+                <p class="pb-3 mb-0 small lh-sm border-bottom ml-2">
+                    
+                    {{ review.review }}
+                    {% if review.purchase %}
+                    
+                    <strong class="d-block text-muted">Purchased  {{ review.car_make }} {{ review.car_model }} in {{ review.purchase_date|slice:"6:"}} </strong>
+                    {% endif %}
+                    
+                </p>
             </div>
+            {% endfor %}
+            
         </div>
-    <!-- </div> -->
-    {% endfor %}
+    {% endif %}
+        
+
 {% endblock %}

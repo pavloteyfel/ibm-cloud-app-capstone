@@ -1,6 +1,7 @@
 {% extends "djangoapp/base.html" %}
 {% block title %}About{% endblock %}
-{% block content %}
+{% block content %}ű
+<div style="margin: 0 auto; width: 500px;">
 <form action="{% url 'djangoapp:login' %}" method="post">
     {% csrf_token %}
     <div class="container">
@@ -19,4 +20,5 @@
         <button class="btn btn-primary" type="submit">Login</button>
     </div>
 </form>
+</div>
 {% endblock %}
