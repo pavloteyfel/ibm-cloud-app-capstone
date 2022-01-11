@@ -29,7 +29,7 @@ APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "pt-dealership.eu-gb.cf.appdomain.cloud",
+    "dealership-pt7.eu-gb.cf.appdomain.cloud",
     ]
 
 
