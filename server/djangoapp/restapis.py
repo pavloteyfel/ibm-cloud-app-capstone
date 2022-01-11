@@ -3,7 +3,7 @@ import requests
 from datetime import timedelta, datetime
 from functools import wraps, lru_cache
 from requests import RequestException
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, fields
 from urllib.parse import urljoin
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson import ApiException
@@ -38,7 +38,7 @@ def timed_cache(**timedelta_kwargs):
                 f.cache_clear()
                 next_update = now + update_delta
             return f(*args, **kwargs)
-
+        _wrapped.cache = f
         return _wrapped
 
     return _wrapper
@@ -87,6 +87,7 @@ def post_request(url, json):
     except RequestException as error:
         print(error)
 
+
 @timed_cache(days=1)
 def get_dealers_from_cf():
     results = []
@@ -115,6 +116,7 @@ def get_dealer_reviews_cf(dealer_id):
             results.append(review)
     return results
 
+
 @timed_cache(days=1)
 def get_dealer_details(dealer_id):
     dealer = None
@@ -126,7 +128,7 @@ def get_dealer_details(dealer_id):
 
 
 def add_review(review):
-    get_dealer_reviews_cf.cache_clear()
+    get_dealer_reviews_cf.cache.cache_clear()
     reviews_url = urljoin(URL, REVIEWS_ENDPOINT)
     review_data = {"review": {**review}}
     post_request(reviews_url, json=review_data)
