@@ -27,9 +27,8 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="{% url 'djangoapp:index' %}"><i class="bi bi-card-list"></i>
                     Dealerships</a>
-                <a class="navbar-brand" href="{% url 'djangoapp:about' %}"><i class="bi bi-info-circle"></i> About</a>
-                <a class="navbar-brand" href="{% url 'djangoapp:contact' %}"><i class="bi bi-envelope"></i> Contact
-                    Us</a>
+                <a class="navbar-brand" href="{% url 'djangoapp:about' %}"><i class="bi bi-info-circle"></i> About Us</a>
+                <a class="navbar-brand" href="{% url 'djangoapp:contact' %}"><i class="bi bi-envelope"></i> Contact Us</a>
                 {% block add_review %}{% endblock %}
             </div>
             <ul class="nav navbar-nav navbar-right">
