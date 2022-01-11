@@ -29,7 +29,7 @@ APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "pt-django-app.eu-gb.cf.appdomain.cloud",
+    "pt-dealership.eu-gb.cf.appdomain.cloud",
     ]
 
 
