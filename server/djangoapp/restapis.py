@@ -14,12 +14,12 @@ from ibm_watson.natural_language_understanding_v1 import (
 )
 
 
-URL = "https://673eb614.eu-gb.apigw.appdomain.cloud/api/"
+URL = ""
 HEADERS = {"Content-Type": "application/json"}
 DEALERSHIPS_ENDPOINT = "dealership"
 REVIEWS_ENDPOINT = "review"
-NLU_API_KEY = "cgCbl_j8c2Kc6TgEZL0ChlFLPsYQiUzCOf9WJe2IZSBD"
-NLU_URL = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/0c163ee7-47ac-4c82-8c2d-a32c137bebd1"
+NLU_API_KEY = ""
+NLU_URL = ""
 
 
 def timed_cache(**timedelta_kwargs):
